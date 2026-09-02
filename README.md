@@ -11,10 +11,9 @@ applicant's income, debt, and credit score into an explainable **score → risk 
 with every rule's contribution persisted for audit — plus a live **what-if simulator** to explore
 the scorecard interactively.
 
-> **Note:** The scorecard thresholds are project-specific educational values, not real bank or
-> NatWest credit policy.
+> **Note:** The scorecard thresholds are project-specific educational values.
 
-![Demo](docs/Credit_Score.gif)
+![Demo](Credit_Score.gif)
 
 ## Why this project
 
@@ -43,6 +42,7 @@ without any rewrite.
   simulate endpoint's isolation from persistence.
 
 ## Architecture
+```
 Browser (HTML/CSS/Vanilla JS)
 ↓
 Express Routes
@@ -54,17 +54,17 @@ Services (business logic orchestration)
 Repositories (database queries)
 ↓
 MySQL
-
+```
 
 The rule engine (`src/rules/scorecard.js`) is a **pure function** — inputs in, a result out, no
 side effects, no dependency on Express, MySQL, HTTP, the filesystem, or environment variables:
-
+```
 Service
 ↓
 evaluateApplication()
 ↓
 Pure calculation → { score, riskTier, outcome, factors }
-
+```
 
 Both the persisted flow (`POST /applications/:id/evaluate`) and the simulator
 (`POST /applications/simulate`) call this same function — the only difference is whether the
@@ -76,44 +76,44 @@ credit-decisioning-engine/
 │
 ├── src/
 │ ├── routes/
-│ │ ├── applicants.js # POST /applicants, GET /applicants/:id/decisions
-│ │ └── applications.js # POST /applications, /:id/evaluate, /simulate
+│ │ ├── applicants.js 
+│ │ └── applications.js 
 │ ├── controllers/
 │ │ ├── applicantController.js
 │ │ ├── applicationController.js
 │ │ └── decisionHistoryController.js
 │ ├── services/
 │ │ ├── applicantService.js
-│ │ ├── applicationService.js # persisted evaluate() + no-persist simulate()
+│ │ ├── applicationService.js 
 │ │ └── decisionHistoryService.js
 │ ├── db/
-│ │ ├── pool.js # MySQL connection pool
-│ │ ├── withTransaction.js # Transaction helper
+│ │ ├── pool.js 
+│ │ ├── withTransaction.js 
 │ │ ├── applicantRepository.js
 │ │ ├── applicationRepository.js
 │ │ └── decisionRepository.js
 │ ├── rules/
-│ │ └── scorecard.js # Pure credit scoring engine
-│ ├── middleware/
-│ ├── errors.js # NotFoundError, ValidationError
-│ └── app.js # Express app setup
+│ │ └── scorecard.js 
+│ ├
+│ ├── errors.js 
+│ └── app.js 
 │
 ├── public/
-│ ├── index.html # Simulator + full workflow demo UI
+│ ├── index.html 
 │ ├── styles.css
-│ └── app.js # Gauge rendering, simulator, workflow forms
+│ └── app.js 
 │
 ├── sql/
-│ └── schema.sql # Database schema
+│ └── schema.sql 
 │
 ├── tests/
-│ ├── scorecard.test.js # 9 tests — pure rule engine
-│ └── simulate.test.js # 3 tests — /simulate endpoint over HTTP
+│ ├── scorecard.test.js 
+│ └── simulate.test.js 
 │
-├── .env.example # Template for environment variables
+├── .env.example
 ├── .gitignore
 ├── package.json
-└── server.js # Application entry point
+└── server.js 
 ```
 
 ## Database
