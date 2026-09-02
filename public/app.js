@@ -252,11 +252,16 @@ function renderApplicantCard(el, applicant) {
   el.className = 'result';
   const card = document.createElement('div');
   card.className = 'decision-card';
-  card.innerHTML = `
-    <h4>Applicant #${applicant.id} — ${applicant.name}</h4>
-    <p>Income: ${formatCurrency(applicant.income)} · Existing debt: ${formatCurrency(applicant.existingDebt)}</p>
-    <p>Credit score: <strong>${applicant.creditScore}</strong></p>
-  `;
+  const h4 = document.createElement('h4');
+h4.textContent = `Applicant #${applicant.id} — ${applicant.name}`;
+
+const p1 = document.createElement('p');
+p1.textContent = `Income: ${formatCurrency(applicant.income)} · Existing debt: ${formatCurrency(applicant.existingDebt)}`;
+
+const p2 = document.createElement('p');
+p2.innerHTML = `Credit score: <strong>${applicant.creditScore}</strong>`; // safe: creditScore is a validated integer, not free text
+
+card.append(h4, p1, p2);
   el.appendChild(card);
   appendHint(el, `Applicant ID ${applicant.id} carried into Step 02 below.`);
 }
