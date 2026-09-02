@@ -1,36 +1,36 @@
-\# Credit Decisioning Engine
+﻿# Credit Decisioning Engine
 
 
 
-!\[Node](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js\&logoColor=white)
+![Node](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)
 
-!\[Express](https://img.shields.io/badge/Express-5-000000?logo=express\&logoColor=white)
+![Express](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)
 
-!\[MySQL](https://img.shields.io/badge/MySQL-8%20(mysql2)-4479A1?logo=mysql\&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8%20(mysql2)-4479A1?logo=mysql&logoColor=white)
 
-!\[Jest](https://img.shields.io/badge/Tests-12%20passing-C21325?logo=jest\&logoColor=white)
+![Jest](https://img.shields.io/badge/Tests-12%20passing-C21325?logo=jest&logoColor=white)
 
-!\[License](https://img.shields.io/badge/License-ISC-lightgrey)
-
-
-
-A backend-first loan underwriting engine: a deterministic, rule-based scorecard that turns an applicant's income, debt, and credit score into an explainable \*\*score → risk tier → decision\*\*, with every rule's contribution persisted for audit — plus a live \*\*what-if simulator\*\* to explore the scorecard interactively.
+![License](https://img.shields.io/badge/License-ISC-lightgrey)
 
 
 
-> \*\*Note:\*\* The scorecard thresholds are project-specific educational values, not real bank or NatWest credit policy.
+A backend-first loan underwriting engine: a deterministic, rule-based scorecard that turns an applicant's income, debt, and credit score into an explainable **score â†’ risk tier â†’ decision**, with every rule's contribution persisted for audit â€” plus a live **what-if simulator** to explore the scorecard interactively.
 
 
 
-!\[Demo](docs/Credit\_Score.gif)
+> **Note:** The scorecard thresholds are project-specific educational values, not real bank or NatWest credit policy.
 
 
 
-\## Why this project
+![Demo](docs/Credit_Score.gif)
 
 
 
-Most student CRUD projects stop at "form → database → table." This one models something a real underwriting system does: it takes a small set of financial signals, runs them through \*\*independent, auditable rules\*\*, and produces a decision that can be explained rule-by-rule — never a black box.
+## Why this project
+
+
+
+Most student CRUD projects stop at "form â†’ database â†’ table." This one models something a real underwriting system does: it takes a small set of financial signals, runs them through **independent, auditable rules**, and produces a decision that can be explained rule-by-rule â€” never a black box.
 
 
 
@@ -38,31 +38,31 @@ The scoring logic is a pure function with zero framework dependencies, so it's t
 
 
 
-\## Key features
+## Key features
 
 
 
-\- \*\*Live what-if simulator\*\* — drag sliders for income, debt, credit score, loan amount, and tenure; the score, risk tier, outcome, and rule-by-rule breakdown update instantly via a read-only `/applications/simulate` endpoint. Nothing is written to the database — it's the same pure rule engine the persisted flow uses, just called directly.
+- **Live what-if simulator** â€” drag sliders for income, debt, credit score, loan amount, and tenure; the score, risk tier, outcome, and rule-by-rule breakdown update instantly via a read-only `/applications/simulate` endpoint. Nothing is written to the database â€” it's the same pure rule engine the persisted flow uses, just called directly.
 
 
 
-\- \*\*Explainable scoring\*\* — every decision stores \*why\* it happened: three independent factors (DTI, credit score, LTI), each with its own point contribution and a human-readable detail string, not just a final number.
+- **Explainable scoring** â€” every decision stores *why* it happened: three independent factors (DTI, credit score, LTI), each with its own point contribution and a human-readable detail string, not just a final number.
 
 
 
-\- \*\*Transactional integrity\*\* — a decision and its full factor breakdown are written atomically; if any insert fails, the whole write rolls back, so a decision can never exist without its audit trail.
+- **Transactional integrity** â€” a decision and its full factor breakdown are written atomically; if any insert fails, the whole write rolls back, so a decision can never exist without its audit trail.
 
 
 
-\- \*\*Layered architecture\*\* — Routes → Controllers → Services → Repositories, with the scoring logic kept completely separate from Express and MySQL.
+- **Layered architecture** â€” Routes â†’ Controllers â†’ Services â†’ Repositories, with the scoring logic kept completely separate from Express and MySQL.
 
 
 
-\- \*\*12 Jest tests\*\* covering scoring boundaries, invalid input, HTTP status codes, and the simulate endpoint's isolation from persistence.
+- **12 Jest tests** covering scoring boundaries, invalid input, HTTP status codes, and the simulate endpoint's isolation from persistence.
 
 
 
-\## Architecture
+## Architecture
 
 
 
@@ -70,43 +70,43 @@ The scoring logic is a pure function with zero framework dependencies, so it's t
 
 Browser (HTML/CSS/Vanilla JS)
 
-&#x20;       ↓
+&#x20;       â†“
 
 Express Routes
 
-&#x20;       ↓
+&#x20;       â†“
 
 Controllers (validation + error mapping)
 
-&#x20;       ↓
+&#x20;       â†“
 
 Services (business logic orchestration)
 
-&#x20;       ↓
+&#x20;       â†“
 
 Repositories (database queries)
 
-&#x20;       ↓
+&#x20;       â†“
 
 MySQL
 
-The rule engine (src/rules/scorecard.js) is a pure function — inputs in, a result out, with no side effects and no dependency on Express, MySQL, HTTP, the filesystem, or environment variables.
+The rule engine (src/rules/scorecard.js) is a pure function â€” inputs in, a result out, with no side effects and no dependency on Express, MySQL, HTTP, the filesystem, or environment variables.
 
 
 
 Service
 
-&#x20;  ↓
+&#x20;  â†“
 
 evaluateApplication()
 
-&#x20;  ↓
+&#x20;  â†“
 
-Pure calculation → { score, riskTier, outcome, factors }
+Pure calculation â†’ { score, riskTier, outcome, factors }
 
 
 
-Both the persisted flow (POST /applications/:id/evaluate) and the simulator (POST /applications/simulate) call this same function — the only difference is whether the result gets written to MySQL afterward.
+Both the persisted flow (POST /applications/:id/evaluate) and the simulator (POST /applications/simulate) call this same function â€” the only difference is whether the result gets written to MySQL afterward.
 
 
 
@@ -114,97 +114,97 @@ Project structure
 
 credit-decisioning-engine/
 
-│
+â”‚
 
-├── src/
+â”œâ”€â”€ src/
 
-│   ├── routes/
+â”‚   â”œâ”€â”€ routes/
 
-│   │   ├── applicants.js          # POST /applicants, GET /applicants/:id/decisions
+â”‚   â”‚   â”œâ”€â”€ applicants.js          # POST /applicants, GET /applicants/:id/decisions
 
-│   │   └── applications.js       # POST /applications, /:id/evaluate, /simulate
+â”‚   â”‚   â””â”€â”€ applications.js       # POST /applications, /:id/evaluate, /simulate
 
-│   │
+â”‚   â”‚
 
-│   ├── controllers/
+â”‚   â”œâ”€â”€ controllers/
 
-│   │   ├── applicantController.js
+â”‚   â”‚   â”œâ”€â”€ applicantController.js
 
-│   │   ├── applicationController.js
+â”‚   â”‚   â”œâ”€â”€ applicationController.js
 
-│   │   └── decisionHistoryController.js
+â”‚   â”‚   â””â”€â”€ decisionHistoryController.js
 
-│   │
+â”‚   â”‚
 
-│   ├── services/
+â”‚   â”œâ”€â”€ services/
 
-│   │   ├── applicantService.js
+â”‚   â”‚   â”œâ”€â”€ applicantService.js
 
-│   │   ├── applicationService.js  # persisted evaluate() + no-persist simulate()
+â”‚   â”‚   â”œâ”€â”€ applicationService.js  # persisted evaluate() + no-persist simulate()
 
-│   │   └── decisionHistoryService.js
+â”‚   â”‚   â””â”€â”€ decisionHistoryService.js
 
-│   │
+â”‚   â”‚
 
-│   ├── db/
+â”‚   â”œâ”€â”€ db/
 
-│   │   ├── pool.js                # MySQL connection pool
+â”‚   â”‚   â”œâ”€â”€ pool.js                # MySQL connection pool
 
-│   │   ├── withTransaction.js     # Transaction helper
+â”‚   â”‚   â”œâ”€â”€ withTransaction.js     # Transaction helper
 
-│   │   ├── applicantRepository.js
+â”‚   â”‚   â”œâ”€â”€ applicantRepository.js
 
-│   │   ├── applicationRepository.js
+â”‚   â”‚   â”œâ”€â”€ applicationRepository.js
 
-│   │   └── decisionRepository.js
+â”‚   â”‚   â””â”€â”€ decisionRepository.js
 
-│   │
+â”‚   â”‚
 
-│   ├── rules/
+â”‚   â”œâ”€â”€ rules/
 
-│   │   └── scorecard.js            # Pure credit scoring engine
+â”‚   â”‚   â””â”€â”€ scorecard.js            # Pure credit scoring engine
 
-│   │
+â”‚   â”‚
 
-│   ├── middleware/
+â”‚   â”œâ”€â”€ middleware/
 
-│   ├── errors.js                   # NotFoundError, ValidationError
+â”‚   â”œâ”€â”€ errors.js                   # NotFoundError, ValidationError
 
-│   └── app.js                      # Express app setup
+â”‚   â””â”€â”€ app.js                      # Express app setup
 
-│
+â”‚
 
-├── public/
+â”œâ”€â”€ public/
 
-│   ├── index.html                  # Simulator + full workflow demo UI
+â”‚   â”œâ”€â”€ index.html                  # Simulator + full workflow demo UI
 
-│   ├── styles.css
+â”‚   â”œâ”€â”€ styles.css
 
-│   └── app.js                      # Gauge rendering, simulator, workflow forms
+â”‚   â””â”€â”€ app.js                      # Gauge rendering, simulator, workflow forms
 
-│
+â”‚
 
-├── sql/
+â”œâ”€â”€ sql/
 
-│   └── schema.sql                  # Database schema
+â”‚   â””â”€â”€ schema.sql                  # Database schema
 
-│
+â”‚
 
-├── tests/
+â”œâ”€â”€ tests/
 
-│   ├── scorecard.test.js           # 9 tests — pure rule engine
+â”‚   â”œâ”€â”€ scorecard.test.js           # 9 tests â€” pure rule engine
 
-│   └── simulate.test.js            # 3 tests — /simulate endpoint over HTTP
+â”‚   â””â”€â”€ simulate.test.js            # 3 tests â€” /simulate endpoint over HTTP
 
-│
+â”‚
 
-├── .env.example                    # Template for environment variables
+â”œâ”€â”€ .env.example                    # Template for environment variables
 
-├── .gitignore
+â”œâ”€â”€ .gitignore
 
-├── package.json
+â”œâ”€â”€ package.json
 
-└── server.js                       # Application entry point
+â””â”€â”€ server.js                       # Application entry point
 
 Database
 
@@ -216,25 +216,25 @@ Four tables with foreign key relationships:
 
 applicants
 
-(id, name, income, existing\_debt, credit\_score)
+(id, name, income, existing_debt, credit_score)
 
-&#x20;       ↓ 1:N
+&#x20;       â†“ 1:N
 
 applications
 
-(id, applicant\_id, loan\_amount, tenure\_months)
+(id, applicant_id, loan_amount, tenure_months)
 
-&#x20;       ↓ 1:N
+&#x20;       â†“ 1:N
 
 decisions
 
-(id, application\_id, score, risk\_tier, outcome)
+(id, application_id, score, risk_tier, outcome)
 
-&#x20;       ↓ 1:N
+&#x20;       â†“ 1:N
 
-decision\_factors
+decision_factors
 
-(id, decision\_id, factor\_name, contribution, detail)
+(id, decision_id, factor_name, contribution, detail)
 
 
 
@@ -244,7 +244,7 @@ Key relationships:
 
 An applicant can have multiple applications.
 
-An application is expected to have one decision under normal use — this isn't yet enforced with a UNIQUE constraint, so calling /evaluate twice on the same application will insert a second decision row (see Future work).
+An application is expected to have one decision under normal use â€” this isn't yet enforced with a UNIQUE constraint, so calling /evaluate twice on the same application will insert a second decision row (see Future work).
 
 A decision has exactly 3 decision factors (one per scoring rule).
 
@@ -264,13 +264,13 @@ Rule 1: Debt-to-Income Ratio (DTI)
 
 DTI	Contribution
 
-≤ 20%	+30
+â‰¤ 20%	+30
 
-≤ 35%	+15
+â‰¤ 35%	+15
 
-≤ 50%	0
+â‰¤ 50%	0
 
-≤ 70%	-15
+â‰¤ 70%	-15
 
 > 70%	-30
 
@@ -278,9 +278,9 @@ Rule 2: Credit Score
 
 Score	Contribution
 
-≥ 750	+30
+â‰¥ 750	+30
 
-650–749	0
+650â€“749	0
 
 < 650	-30
 
@@ -288,13 +288,13 @@ Rule 3: Loan-to-Income Ratio (LTI)
 
 LTI	Contribution
 
-≤ 1x	+30
+â‰¤ 1x	+30
 
-≤ 2x	+15
+â‰¤ 2x	+15
 
-≤ 3x	0
+â‰¤ 3x	0
 
-≤ 5x	-15
+â‰¤ 5x	-15
 
 > 5x	-30
 
@@ -302,9 +302,9 @@ Risk tiers
 
 Score	Risk Tier
 
-≥ 40	LOW
+â‰¥ 40	LOW
 
-0–39	MEDIUM
+0â€“39	MEDIUM
 
 < 0	HIGH
 
@@ -312,13 +312,13 @@ Outcome
 
 Score	Outcome
 
-≥ 20	APPROVED
+â‰¥ 20	APPROVED
 
 < 20	REJECTED
 
 
 
-Important: Risk tier and outcome are independent. A MEDIUM-risk application can still be APPROVED (score ≥ 20).
+Important: Risk tier and outcome are independent. A MEDIUM-risk application can still be APPROVED (score â‰¥ 20).
 
 
 
@@ -344,19 +344,19 @@ POST /applications/simulate
 
 
 
-Run the scorecard against any inputs with no persistence — nothing needs to exist in the database first. This is what powers the frontend's live simulator.
+Run the scorecard against any inputs with no persistence â€” nothing needs to exist in the database first. This is what powers the frontend's live simulator.
 
 
 
-curl -X POST http://localhost:3002/applications/simulate \\
+curl -X POST http://localhost:3002/applications/simulate \
 
-&#x20; -H "Content-Type: application/json" \\
+&#x20; -H "Content-Type: application/json" \
 
 &#x20; -d '{"income":60000,"existingDebt":21000,"creditScore":700,"loanAmount":120000,"tenureMonths":36}'
 
 
 
-Response (200) — identical shape to /evaluate, minus the persistence-only fields:
+Response (200) â€” identical shape to /evaluate, minus the persistence-only fields:
 
 
 
@@ -368,11 +368,11 @@ Response (200) — identical shape to /evaluate, minus the persistence-only fiel
 
 &#x20; "outcome": "APPROVED",
 
-&#x20; "factors": \[
+&#x20; "factors": [
 
 &#x20;   {
 
-&#x20;     "factorName": "debt\_to\_income\_ratio",
+&#x20;     "factorName": "debt_to_income_ratio",
 
 &#x20;     "contribution": 15,
 
@@ -382,7 +382,7 @@ Response (200) — identical shape to /evaluate, minus the persistence-only fiel
 
 &#x20;   {
 
-&#x20;     "factorName": "credit\_score",
+&#x20;     "factorName": "credit_score",
 
 &#x20;     "contribution": 0,
 
@@ -392,7 +392,7 @@ Response (200) — identical shape to /evaluate, minus the persistence-only fiel
 
 &#x20;   {
 
-&#x20;     "factorName": "loan\_to\_income\_ratio",
+&#x20;     "factorName": "loan_to_income_ratio",
 
 &#x20;     "contribution": 15,
 
@@ -412,9 +412,9 @@ Error cases: 400 for any invalid field (same validation rules as /applicants + /
 
 POST /applicants
 
-curl -X POST http://localhost:3002/applicants \\
+curl -X POST http://localhost:3002/applicants \
 
-&#x20; -H "Content-Type: application/json" \\
+&#x20; -H "Content-Type: application/json" \
 
 &#x20; -d '{"name":"Jane Doe","income":60000,"existingDebt":21000,"creditScore":700}'
 
@@ -454,9 +454,9 @@ creditScore must be an integer between 300 and 900
 
 POST /applications
 
-curl -X POST http://localhost:3002/applications \\
+curl -X POST http://localhost:3002/applications \
 
-&#x20; -H "Content-Type: application/json" \\
+&#x20; -H "Content-Type: application/json" \
 
 &#x20; -d '{"applicantId":1,"loanAmount":120000,"tenureMonths":36}'
 
@@ -512,7 +512,7 @@ Response (200):
 
 &#x20; "outcome": "APPROVED",
 
-&#x20; "factors": \[
+&#x20; "factors": [
 
 &#x20;   ...
 
@@ -540,7 +540,7 @@ Response (200):
 
 &#x20; "applicantId": 1,
 
-&#x20; "decisions": \[
+&#x20; "decisions": [
 
 &#x20;   {
 
@@ -560,7 +560,7 @@ Response (200):
 
 &#x20;     "decidedAt": "2026-09-01T...",
 
-&#x20;     "factors": \[
+&#x20;     "factors": [
 
 &#x20;       ...
 
@@ -574,7 +574,7 @@ Response (200):
 
 
 
-Note: If the applicant exists but has no decisions, returns 200 with decisions: \[] — not a 404.
+Note: If the applicant exists but has no decisions, returns 200 with decisions: [] â€” not a 404.
 
 
 
@@ -588,23 +588,23 @@ The evaluation endpoint (POST /applications/:id/evaluate) uses a database transa
 
 BEGIN
 
-&#x20; ↓
+&#x20; â†“
 
 INSERT decision
 
-&#x20; ↓
+&#x20; â†“
 
 INSERT factor 1
 
-&#x20; ↓
+&#x20; â†“
 
 INSERT factor 2
 
-&#x20; ↓
+&#x20; â†“
 
 INSERT factor 3
 
-&#x20; ↓
+&#x20; â†“
 
 COMMIT
 
@@ -614,7 +614,7 @@ If any step fails: ROLLBACK.
 
 
 
-This guarantees a decision never exists without its complete rule-level audit trail. /applications/simulate never touches this path at all — it can't corrupt persisted data because it never writes anything.
+This guarantees a decision never exists without its complete rule-level audit trail. /applications/simulate never touches this path at all â€” it can't corrupt persisted data because it never writes anything.
 
 
 
@@ -662,7 +662,7 @@ cp .env.example .env
 
 
 
-Edit .env and set DB\_PASSWORD to your MySQL root password.
+Edit .env and set DB_PASSWORD to your MySQL root password.
 
 
 
@@ -692,7 +692,7 @@ http://localhost:3002
 
 
 
-The What-if Simulator tab works immediately with no setup — it never touches MySQL. The Full Workflow Demo tab needs the database from step 3.
+The What-if Simulator tab works immediately with no setup â€” it never touches MySQL. The Full Workflow Demo tab needs the database from step 3.
 
 
 
@@ -700,7 +700,7 @@ Frontend
 
 
 
-Plain HTML, CSS, and vanilla JavaScript — no build step, no framework. Built with Claude's help on the UI.
+Plain HTML, CSS, and vanilla JavaScript â€” no build step, no framework. Built with Claude's help on the UI.
 
 
 
@@ -708,17 +708,17 @@ Two tabs:
 
 
 
-What-if Simulator — five sliders drive a live SVG gauge, risk/outcome badges, and a per-rule factor breakdown with proportional bars, all recalculated on every drag via POST /applications/simulate.
+What-if Simulator â€” five sliders drive a live SVG gauge, risk/outcome badges, and a per-rule factor breakdown with proportional bars, all recalculated on every drag via POST /applications/simulate.
 
-Full Workflow Demo — the persisted, four-step path: create an applicant, submit a loan application, evaluate it (writes a decision), then look up that applicant's decision history.
+Full Workflow Demo â€” the persisted, four-step path: create an applicant, submit a loan application, evaluate it (writes a decision), then look up that applicant's decision history.
 
-Edge cases \& design decisions
+Edge cases & design decisions
 
 income must be > 0: a zero-value income makes DTI/LTI calculations undefined (division by zero)
 
 loanAmount must be > 0: a zero-value loan is not a meaningful credit application
 
-creditScore limited to 300–900: common credit score range for validation
+creditScore limited to 300â€“900: common credit score range for validation
 
 Risk tier and outcome are independent: an application can be MEDIUM risk but still APPROVED
 
@@ -728,7 +728,7 @@ Transaction rollback: protects decision/factor consistency on partial failures
 
 Parameterized SQL: all queries use ? placeholders to prevent SQL injection
 
-Simulate is deliberately stateless: it reuses the exact same rule engine as the persisted path so the "what-if" numbers a user sees are guaranteed to match what a real evaluation would produce — there's no second, drifting copy of the scoring logic
+Simulate is deliberately stateless: it reuses the exact same rule engine as the persisted path so the "what-if" numbers a user sees are guaranteed to match what a real evaluation would produce â€” there's no second, drifting copy of the scoring logic
 
 Future work
 
@@ -738,7 +738,7 @@ Not implemented, and intentionally scoped out for now:
 
 
 
-UNIQUE constraint on decisions.application\_id to enforce one decision per application at the database level (currently only expected by convention, not enforced)
+UNIQUE constraint on decisions.application_id to enforce one decision per application at the database level (currently only expected by convention, not enforced)
 
 Scorecard versioning and comparison
 
@@ -759,4 +759,5 @@ License
 
 
 ISC
+
 
