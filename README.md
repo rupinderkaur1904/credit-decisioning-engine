@@ -11,10 +11,9 @@ applicant's income, debt, and credit score into an explainable **score → risk 
 with every rule's contribution persisted for audit — plus a live **what-if simulator** to explore
 the scorecard interactively.
 
-> **Note:** The scorecard thresholds are project-specific educational values, not real bank or
-> NatWest credit policy.
+> **Note:** The scorecard thresholds are project-specific educational values.
 
-![Demo](docs/Credit_Score.gif)
+![Demo](Credit_Score.gif)
 
 ## Why this project
 
