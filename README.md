@@ -1,4 +1,4 @@
-﻿# Credit Decisioning Engine
+# Credit Decisioning Engine
 
 
 
@@ -14,7 +14,7 @@
 
 
 
-A backend-first loan underwriting engine: a deterministic, rule-based scorecard that turns an applicant's income, debt, and credit score into an explainable **score â†’ risk tier â†’ decision**, with every rule's contribution persisted for audit â€” plus a live **what-if simulator** to explore the scorecard interactively.
+A backend-first loan underwriting engine: a deterministic, rule-based scorecard that turns an applicant's income, debt, and credit score into an explainable **score -> risk tier -> decision**, with every rule's contribution persisted for audit - plus a live **what-if simulator** to explore the scorecard interactively.
 
 
 
@@ -30,7 +30,7 @@ A backend-first loan underwriting engine: a deterministic, rule-based scorecard 
 
 
 
-Most student CRUD projects stop at "form â†’ database â†’ table." This one models something a real underwriting system does: it takes a small set of financial signals, runs them through **independent, auditable rules**, and produces a decision that can be explained rule-by-rule â€” never a black box.
+Most student CRUD projects stop at "form -> database -> table." This one models something a real underwriting system does: it takes a small set of financial signals, runs them through **independent, auditable rules**, and produces a decision that can be explained rule-by-rule - never a black box.
 
 
 
@@ -42,19 +42,19 @@ The scoring logic is a pure function with zero framework dependencies, so it's t
 
 
 
-- **Live what-if simulator** â€” drag sliders for income, debt, credit score, loan amount, and tenure; the score, risk tier, outcome, and rule-by-rule breakdown update instantly via a read-only `/applications/simulate` endpoint. Nothing is written to the database â€” it's the same pure rule engine the persisted flow uses, just called directly.
+- **Live what-if simulator** - drag sliders for income, debt, credit score, loan amount, and tenure; the score, risk tier, outcome, and rule-by-rule breakdown update instantly via a read-only `/applications/simulate` endpoint. Nothing is written to the database - it's the same pure rule engine the persisted flow uses, just called directly.
 
 
 
-- **Explainable scoring** â€” every decision stores *why* it happened: three independent factors (DTI, credit score, LTI), each with its own point contribution and a human-readable detail string, not just a final number.
+- **Explainable scoring** - every decision stores *why* it happened: three independent factors (DTI, credit score, LTI), each with its own point contribution and a human-readable detail string, not just a final number.
 
 
 
-- **Transactional integrity** â€” a decision and its full factor breakdown are written atomically; if any insert fails, the whole write rolls back, so a decision can never exist without its audit trail.
+- **Transactional integrity** - a decision and its full factor breakdown are written atomically; if any insert fails, the whole write rolls back, so a decision can never exist without its audit trail.
 
 
 
-- **Layered architecture** â€” Routes â†’ Controllers â†’ Services â†’ Repositories, with the scoring logic kept completely separate from Express and MySQL.
+- **Layered architecture** - Routes -> Controllers -> Services -> Repositories, with the scoring logic kept completely separate from Express and MySQL.
 
 
 
@@ -70,43 +70,43 @@ The scoring logic is a pure function with zero framework dependencies, so it's t
 
 Browser (HTML/CSS/Vanilla JS)
 
-&#x20;       â†“
+&#x20;       v
 
 Express Routes
 
-&#x20;       â†“
+&#x20;       v
 
 Controllers (validation + error mapping)
 
-&#x20;       â†“
+&#x20;       v
 
 Services (business logic orchestration)
 
-&#x20;       â†“
+&#x20;       v
 
 Repositories (database queries)
 
-&#x20;       â†“
+&#x20;       v
 
 MySQL
 
-The rule engine (src/rules/scorecard.js) is a pure function â€” inputs in, a result out, with no side effects and no dependency on Express, MySQL, HTTP, the filesystem, or environment variables.
+The rule engine (src/rules/scorecard.js) is a pure function - inputs in, a result out, with no side effects and no dependency on Express, MySQL, HTTP, the filesystem, or environment variables.
 
 
 
 Service
 
-&#x20;  â†“
+&#x20;  v
 
 evaluateApplication()
 
-&#x20;  â†“
+&#x20;  v
 
-Pure calculation â†’ { score, riskTier, outcome, factors }
+Pure calculation -> { score, riskTier, outcome, factors }
 
 
 
-Both the persisted flow (POST /applications/:id/evaluate) and the simulator (POST /applications/simulate) call this same function â€” the only difference is whether the result gets written to MySQL afterward.
+Both the persisted flow (POST /applications/:id/evaluate) and the simulator (POST /applications/simulate) call this same function - the only difference is whether the result gets written to MySQL afterward.
 
 
 
@@ -192,9 +192,9 @@ credit-decisioning-engine/
 
 â”œâ”€â”€ tests/
 
-â”‚   â”œâ”€â”€ scorecard.test.js           # 9 tests â€” pure rule engine
+â”‚   â”œâ”€â”€ scorecard.test.js           # 9 tests - pure rule engine
 
-â”‚   â””â”€â”€ simulate.test.js            # 3 tests â€” /simulate endpoint over HTTP
+â”‚   â””â”€â”€ simulate.test.js            # 3 tests - /simulate endpoint over HTTP
 
 â”‚
 
@@ -218,19 +218,19 @@ applicants
 
 (id, name, income, existing_debt, credit_score)
 
-&#x20;       â†“ 1:N
+&#x20;       v 1:N
 
 applications
 
 (id, applicant_id, loan_amount, tenure_months)
 
-&#x20;       â†“ 1:N
+&#x20;       v 1:N
 
 decisions
 
 (id, application_id, score, risk_tier, outcome)
 
-&#x20;       â†“ 1:N
+&#x20;       v 1:N
 
 decision_factors
 
@@ -244,7 +244,7 @@ Key relationships:
 
 An applicant can have multiple applications.
 
-An application is expected to have one decision under normal use â€” this isn't yet enforced with a UNIQUE constraint, so calling /evaluate twice on the same application will insert a second decision row (see Future work).
+An application is expected to have one decision under normal use - this isn't yet enforced with a UNIQUE constraint, so calling /evaluate twice on the same application will insert a second decision row (see Future work).
 
 A decision has exactly 3 decision factors (one per scoring rule).
 
@@ -344,7 +344,7 @@ POST /applications/simulate
 
 
 
-Run the scorecard against any inputs with no persistence â€” nothing needs to exist in the database first. This is what powers the frontend's live simulator.
+Run the scorecard against any inputs with no persistence - nothing needs to exist in the database first. This is what powers the frontend's live simulator.
 
 
 
@@ -356,7 +356,7 @@ curl -X POST http://localhost:3002/applications/simulate \
 
 
 
-Response (200) â€” identical shape to /evaluate, minus the persistence-only fields:
+Response (200) - identical shape to /evaluate, minus the persistence-only fields:
 
 
 
@@ -574,7 +574,7 @@ Response (200):
 
 
 
-Note: If the applicant exists but has no decisions, returns 200 with decisions: [] â€” not a 404.
+Note: If the applicant exists but has no decisions, returns 200 with decisions: [] - not a 404.
 
 
 
@@ -588,23 +588,23 @@ The evaluation endpoint (POST /applications/:id/evaluate) uses a database transa
 
 BEGIN
 
-&#x20; â†“
+&#x20; v
 
 INSERT decision
 
-&#x20; â†“
+&#x20; v
 
 INSERT factor 1
 
-&#x20; â†“
+&#x20; v
 
 INSERT factor 2
 
-&#x20; â†“
+&#x20; v
 
 INSERT factor 3
 
-&#x20; â†“
+&#x20; v
 
 COMMIT
 
@@ -614,7 +614,7 @@ If any step fails: ROLLBACK.
 
 
 
-This guarantees a decision never exists without its complete rule-level audit trail. /applications/simulate never touches this path at all â€” it can't corrupt persisted data because it never writes anything.
+This guarantees a decision never exists without its complete rule-level audit trail. /applications/simulate never touches this path at all - it can't corrupt persisted data because it never writes anything.
 
 
 
@@ -692,7 +692,7 @@ http://localhost:3002
 
 
 
-The What-if Simulator tab works immediately with no setup â€” it never touches MySQL. The Full Workflow Demo tab needs the database from step 3.
+The What-if Simulator tab works immediately with no setup - it never touches MySQL. The Full Workflow Demo tab needs the database from step 3.
 
 
 
@@ -700,7 +700,7 @@ Frontend
 
 
 
-Plain HTML, CSS, and vanilla JavaScript â€” no build step, no framework. Built with Claude's help on the UI.
+Plain HTML, CSS, and vanilla JavaScript - no build step, no framework. Built with Claude's help on the UI.
 
 
 
@@ -708,9 +708,9 @@ Two tabs:
 
 
 
-What-if Simulator â€” five sliders drive a live SVG gauge, risk/outcome badges, and a per-rule factor breakdown with proportional bars, all recalculated on every drag via POST /applications/simulate.
+What-if Simulator - five sliders drive a live SVG gauge, risk/outcome badges, and a per-rule factor breakdown with proportional bars, all recalculated on every drag via POST /applications/simulate.
 
-Full Workflow Demo â€” the persisted, four-step path: create an applicant, submit a loan application, evaluate it (writes a decision), then look up that applicant's decision history.
+Full Workflow Demo - the persisted, four-step path: create an applicant, submit a loan application, evaluate it (writes a decision), then look up that applicant's decision history.
 
 Edge cases & design decisions
 
@@ -728,7 +728,7 @@ Transaction rollback: protects decision/factor consistency on partial failures
 
 Parameterized SQL: all queries use ? placeholders to prevent SQL injection
 
-Simulate is deliberately stateless: it reuses the exact same rule engine as the persisted path so the "what-if" numbers a user sees are guaranteed to match what a real evaluation would produce â€” there's no second, drifting copy of the scoring logic
+Simulate is deliberately stateless: it reuses the exact same rule engine as the persisted path so the "what-if" numbers a user sees are guaranteed to match what a real evaluation would produce - there's no second, drifting copy of the scoring logic
 
 Future work
 
