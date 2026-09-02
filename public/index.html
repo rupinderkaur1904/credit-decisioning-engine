@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credit Decisioning Engine</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sheet">
+
+    <header class="letterhead">
+      <h1 class="letterhead__title">Credit Decisioning Engine</h1>
+      <p class="letterhead__meta">Rule-based credit assessment &middot; DTI &middot; Credit Score &middot; LTI</p>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab is-active" data-tab="simulate" role="tab" aria-selected="true">What-if Simulator</button>
+      <button class="tab" data-tab="workflow" role="tab" aria-selected="false">Decision Workflow</button>
+    </nav>
+
+    <!-- ============ SIMULATOR PANEL ============ -->
+    <section class="panel is-active" id="panel-simulate" role="tabpanel">
+      <p class="panel-intro">
+        Adjust the inputs below to explore different credit scenarios. The score and individual
+        factors update in real time.
+      </p>
+
+      <div class="simulator">
+        <div class="controls">
+          <div class="field">
+            <div class="field__row">
+              <label for="s-income">Annual income</label>
+              <span class="field__value" id="v-income">₹6,00,000</span>
+            </div>
+            <input type="range" id="s-income" min="100000" max="3000000" step="10000" value="600000">
+          </div>
+
+          <div class="field">
+            <div class="field__row">
+              <label for="s-debt">Existing annual debt</label>
+              <span class="field__value" id="v-debt">₹2,10,000</span>
+            </div>
+            <input type="range" id="s-debt" min="0" max="2000000" step="10000" value="210000">
+          </div>
+
+          <div class="field">
+            <div class="field__row">
+              <label for="s-credit">Credit score</label>
+              <span class="field__value" id="v-credit">700</span>
+            </div>
+            <input type="range" id="s-credit" min="300" max="900" step="5" value="700">
+          </div>
+
+          <div class="field">
+            <div class="field__row">
+              <label for="s-loan">Loan amount requested</label>
+              <span class="field__value" id="v-loan">₹12,00,000</span>
+            </div>
+            <input type="range" id="s-loan" min="50000" max="6000000" step="10000" value="1200000">
+          </div>
+
+          <div class="field">
+            <div class="field__row">
+              <label for="s-tenure">Tenure</label>
+              <span class="field__value" id="v-tenure">36 months</span>
+            </div>
+            <input type="range" id="s-tenure" min="6" max="84" step="6" value="36">
+          </div>
+        </div>
+
+        <div class="readout">
+          <svg class="gauge" viewBox="0 0 300 175" aria-hidden="true">
+            <path id="gauge-track" class="gauge__track" />
+            <path id="gauge-progress" class="gauge__progress" />
+            <line id="gauge-needle" class="gauge__needle" x1="150" y1="150" x2="150" y2="40" />
+            <circle cx="150" cy="150" r="7" class="gauge__hub" />
+          </svg>
+          <div class="score-line">
+            <span class="score-line__number" id="score-number">30</span>
+            <span class="score-line__range">/ &minus;90 to 90</span>
+          </div>
+
+          <div class="badges">
+            <span class="badge" id="badge-risk">MEDIUM RISK</span>
+            <span class="badge" id="badge-outcome">APPROVED</span>
+          </div>
+
+          <div class="factors" id="sim-factors"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WORKFLOW PANEL ============ -->
+    <section class="panel" id="panel-workflow" role="tabpanel">
+      <p class="panel-intro">
+        Enter applicant and loan details to evaluate a credit application and review the
+        resulting decision and history.
+      </p>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step__marker" data-num="01">01</div>
+          <div class="step__body">
+            <h3>Create applicant</h3>
+            <form id="applicantForm" class="inline-form">
+              <input type="text" name="name" placeholder="Full name" required>
+              <input type="number" name="income" placeholder="Income" step="any" min="0" required>
+              <input type="number" name="existingDebt" placeholder="Existing debt" step="any" min="0" required>
+              <input type="number" name="creditScore" placeholder="Credit score" min="300" max="900" required>
+              <button type="submit">Create</button>
+            </form>
+            <div class="result" id="applicantResult" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step__marker" data-num="02">02</div>
+          <div class="step__body">
+            <h3>Submit loan application</h3>
+            <form id="applicationForm" class="inline-form">
+              <input type="number" name="applicantId" placeholder="Applicant ID" min="1" required>
+              <input type="number" name="loanAmount" placeholder="Loan amount" step="any" min="0" required>
+              <input type="number" name="tenureMonths" placeholder="Tenure (months)" min="1" required>
+              <button type="submit">Submit</button>
+            </form>
+            <div class="result" id="applicationResult" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step__marker" data-num="03">03</div>
+          <div class="step__body">
+            <h3>Evaluate application</h3>
+            <form id="evaluateForm" class="inline-form">
+              <input type="number" name="applicationId" placeholder="Application ID" min="1" required>
+              <button type="submit">Evaluate</button>
+            </form>
+            <div class="result" id="evaluateResult" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step__marker" data-num="04">04</div>
+          <div class="step__body">
+            <h3>View decision history</h3>
+            <form id="historyForm" class="inline-form">
+              <input type="number" name="applicantId" placeholder="Applicant ID" min="1" required>
+              <button type="submit">Look up</button>
+            </form>
+            <div class="result" id="historyResult" aria-live="polite"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
