@@ -88,33 +88,29 @@ without any rewrite.
 
 \## Architecture
 
-
-
-```
-
 Browser (HTML/CSS/Vanilla JS)
 
-&#x20;   ↓
+↓
 
 Express Routes
 
-&#x20;   ↓
+↓
 
 Controllers (validation + error mapping)
 
-&#x20;   ↓
+↓
 
 Services (business logic orchestration)
 
-&#x20;   ↓
+↓
 
 Repositories (database queries)
 
-&#x20;   ↓
+↓
 
 MySQL
 
-```
+
 
 
 
@@ -124,19 +120,17 @@ side effects, no dependency on Express, MySQL, HTTP, the filesystem, or environm
 
 
 
-```
-
 Service
 
-&#x20;   ↓
+↓
 
 evaluateApplication()
 
-&#x20;   ↓
+↓
 
 Pure calculation → { score, riskTier, outcome, factors }
 
-```
+
 
 
 
@@ -152,93 +146,91 @@ result gets written to MySQL afterward.
 
 
 
-```
-
 credit-decisioning-engine/
 
 │
 
 ├── src/
 
-│   ├── routes/
+│ ├── routes/
 
-│   │   ├── applicants.js          # POST /applicants, GET /applicants/:id/decisions
+│ │ ├── applicants.js # POST /applicants, GET /applicants/:id/decisions
 
-│   │   └── applications.js        # POST /applications, /:id/evaluate, /simulate
+│ │ └── applications.js # POST /applications, /:id/evaluate, /simulate
 
-│   ├── controllers/
+│ ├── controllers/
 
-│   │   ├── applicantController.js
+│ │ ├── applicantController.js
 
-│   │   ├── applicationController.js
+│ │ ├── applicationController.js
 
-│   │   └── decisionHistoryController.js
+│ │ └── decisionHistoryController.js
 
-│   ├── services/
+│ ├── services/
 
-│   │   ├── applicantService.js
+│ │ ├── applicantService.js
 
-│   │   ├── applicationService.js  # persisted evaluate() + no-persist simulate()
+│ │ ├── applicationService.js # persisted evaluate() + no-persist simulate()
 
-│   │   └── decisionHistoryService.js
+│ │ └── decisionHistoryService.js
 
-│   ├── db/
+│ ├── db/
 
-│   │   ├── pool.js                # MySQL connection pool
+│ │ ├── pool.js # MySQL connection pool
 
-│   │   ├── withTransaction.js     # Transaction helper
+│ │ ├── withTransaction.js # Transaction helper
 
-│   │   ├── applicantRepository.js
+│ │ ├── applicantRepository.js
 
-│   │   ├── applicationRepository.js
+│ │ ├── applicationRepository.js
 
-│   │   └── decisionRepository.js
+│ │ └── decisionRepository.js
 
-│   ├── rules/
+│ ├── rules/
 
-│   │   └── scorecard.js           # Pure credit scoring engine
+│ │ └── scorecard.js # Pure credit scoring engine
 
-│   ├── middleware/
+│ ├── middleware/
 
-│   ├── errors.js                  # NotFoundError, ValidationError
+│ ├── errors.js # NotFoundError, ValidationError
 
-│   └── app.js                     # Express app setup
+│ └── app.js # Express app setup
 
 │
 
 ├── public/
 
-│   ├── index.html                 # Simulator + full workflow demo UI
+│ ├── index.html # Simulator + full workflow demo UI
 
-│   ├── styles.css
+│ ├── styles.css
 
-│   └── app.js                     # Gauge rendering, simulator, workflow forms
+│ └── app.js # Gauge rendering, simulator, workflow forms
 
 │
 
 ├── sql/
 
-│   └── schema.sql                 # Database schema
+│ └── schema.sql # Database schema
 
 │
 
 ├── tests/
 
-│   ├── scorecard.test.js          # 9 tests — pure rule engine
+│ ├── scorecard.test.js # 9 tests — pure rule engine
 
-│   └── simulate.test.js           # 3 tests — /simulate endpoint over HTTP
+│ └── simulate.test.js # 3 tests — /simulate endpoint over HTTP
 
 │
 
-├── .env.example                   # Template for environment variables
+├── .env.example # Template for environment variables
 
 ├── .gitignore
 
 ├── package.json
 
-└── server.js                      # Application entry point
+└── server.js # Application entry point
 
-```
+
 
 
 
@@ -646,21 +638,19 @@ atomicity:
 
 
 
-```
-
 BEGIN
 
-&#x20; → INSERT decision
+→ INSERT decision
 
-&#x20; → INSERT factor 1
+→ INSERT factor 1
 
-&#x20; → INSERT factor 2
+→ INSERT factor 2
 
-&#x20; → INSERT factor 3
+→ INSERT factor 3
 
 COMMIT
 
-```
+
 
 
 
@@ -686,13 +676,13 @@ npx jest
 
 Expected output:
 
-```
+
 
 Test Suites: 2 passed, 2 total
 
-Tests:       12 passed, 12 total
+Tests: 12 passed, 12 total
 
-```
+
 
 
 
@@ -770,11 +760,9 @@ npm run dev
 
 
 
-```
-
 Server running on port 3002
 
-```
+
 
 
 
