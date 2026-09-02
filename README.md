@@ -43,6 +43,7 @@ without any rewrite.
   simulate endpoint's isolation from persistence.
 
 ## Architecture
+```
 Browser (HTML/CSS/Vanilla JS)
 ↓
 Express Routes
@@ -54,17 +55,17 @@ Services (business logic orchestration)
 Repositories (database queries)
 ↓
 MySQL
-
+```
 
 The rule engine (`src/rules/scorecard.js`) is a **pure function** — inputs in, a result out, no
 side effects, no dependency on Express, MySQL, HTTP, the filesystem, or environment variables:
-
+```
 Service
 ↓
 evaluateApplication()
 ↓
 Pure calculation → { score, riskTier, outcome, factors }
-
+```
 
 Both the persisted flow (`POST /applications/:id/evaluate`) and the simulator
 (`POST /applications/simulate`) call this same function — the only difference is whether the
