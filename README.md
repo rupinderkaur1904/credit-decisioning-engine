@@ -76,44 +76,44 @@ credit-decisioning-engine/
 │
 ├── src/
 │ ├── routes/
-│ │ ├── applicants.js # POST /applicants, GET /applicants/:id/decisions
-│ │ └── applications.js # POST /applications, /:id/evaluate, /simulate
+│ │ ├── applicants.js 
+│ │ └── applications.js 
 │ ├── controllers/
 │ │ ├── applicantController.js
 │ │ ├── applicationController.js
 │ │ └── decisionHistoryController.js
 │ ├── services/
 │ │ ├── applicantService.js
-│ │ ├── applicationService.js # persisted evaluate() + no-persist simulate()
+│ │ ├── applicationService.js 
 │ │ └── decisionHistoryService.js
 │ ├── db/
-│ │ ├── pool.js # MySQL connection pool
-│ │ ├── withTransaction.js # Transaction helper
+│ │ ├── pool.js 
+│ │ ├── withTransaction.js 
 │ │ ├── applicantRepository.js
 │ │ ├── applicationRepository.js
 │ │ └── decisionRepository.js
 │ ├── rules/
-│ │ └── scorecard.js # Pure credit scoring engine
-│ ├── middleware/
-│ ├── errors.js # NotFoundError, ValidationError
-│ └── app.js # Express app setup
+│ │ └── scorecard.js 
+│ ├
+│ ├── errors.js 
+│ └── app.js 
 │
 ├── public/
-│ ├── index.html # Simulator + full workflow demo UI
+│ ├── index.html 
 │ ├── styles.css
-│ └── app.js # Gauge rendering, simulator, workflow forms
+│ └── app.js 
 │
 ├── sql/
-│ └── schema.sql # Database schema
+│ └── schema.sql 
 │
 ├── tests/
-│ ├── scorecard.test.js # 9 tests — pure rule engine
-│ └── simulate.test.js # 3 tests — /simulate endpoint over HTTP
+│ ├── scorecard.test.js 
+│ └── simulate.test.js 
 │
-├── .env.example # Template for environment variables
+├── .env.example
 ├── .gitignore
 ├── package.json
-└── server.js # Application entry point
+└── server.js 
 ```
 
 ## Database
