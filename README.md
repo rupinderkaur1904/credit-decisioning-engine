@@ -71,7 +71,7 @@ Both the persisted flow (`POST /applications/:id/evaluate`) and the simulator
 result gets written to MySQL afterward.
 
 ## Project structure
-
+```
 credit-decisioning-engine/
 │
 ├── src/
@@ -114,7 +114,7 @@ credit-decisioning-engine/
 ├── .gitignore
 ├── package.json
 └── server.js # Application entry point
-
+```
 
 ## Database
 
